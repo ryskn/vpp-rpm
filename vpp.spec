@@ -27,9 +27,9 @@ Version: %{_version}
 Release: 0.1.rc0.20211129gitcba1c2258%{?dist}
 Source: %{name}-%{version}-rc0~346_gcba1c2258.tar.xz
 BuildRequires: vpp-ext-deps
+BuildRequires: systemd-rpm-macros chrpath
 BuildRequires: pkgconfig(openssl) < 3
 BuildRequires: openssl mbedtls-devel
-BuildRequires: systemd-rpm-macros chrpath
 BuildRequires: python3-devel python3-ply
 BuildRequires: check-devel boost-devel selinux-policy-devel
 BuildRequires: libmnl-devel libnl3-devel
@@ -37,9 +37,6 @@ BuildRequires: libffi-devel apr-devel numactl-devel
 BuildRequires: elfutils-libelf-devel libuuid-devel
 BuildRequires: libtool byacc bison flex
 BuildRequires: gcc-c++ cmake ninja-build
-%if 0%{?fedora}
-BuildRequires: subunit-devel
-%endif
 Requires: vpp-lib = %{version}-%{release}, vpp-selinux-policy = %{version}-%{release}, net-tools, pciutils
 Requires: boost-filesystem mbedtls libffi-devel
 

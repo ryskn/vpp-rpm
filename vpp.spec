@@ -1,5 +1,4 @@
-%define _version 22.02
-%define _mu_build_dir    %{_builddir}/%{name}-%{_version}/build-root
+%define _mu_build_dir    %{_builddir}/%{name}-%{version}/build-root
 %define _vpp_install_dir install-vpp-native
 
 %{?systemd_requires}
@@ -23,7 +22,7 @@
 Name: vpp
 Summary: Vector Packet Processing
 License: ASL 2.0
-Version: %{_version}
+Version: 22.02
 Release: 0.369.rc0.20211204gitc14b8cfe6%{?dist}
 Source: %{name}-%{version}-rc0~369_gc14b8cfe6.tar.xz
 BuildRequires: vpp-ext-deps

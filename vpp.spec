@@ -1,3 +1,4 @@
+%undefine _auto_set_build_flags
 %define _mu_build_dir    %{_builddir}/%{name}-%{version}/build-root
 %define _vpp_install_dir install-vpp-native
 
@@ -23,12 +24,11 @@ Name: vpp
 Summary: Vector Packet Processing
 License: ASL 2.0
 Version: 22.02
-Release: 0.rc1.20220125git93e5bea2d%{?dist}
+Release: 0.1000.rc1.20220129git93e5bea2d%{?dist}
 Source: %{name}-%{version}-rc1~0_g93e5bea2d.tar.xz
 BuildRequires: vpp-ext-deps
 BuildRequires: systemd-rpm-macros chrpath
-BuildRequires: pkgconfig(openssl) < 3
-BuildRequires: openssl mbedtls-devel
+BuildRequires: openssl openssl-devel mbedtls-devel
 BuildRequires: python3-devel python3-ply
 BuildRequires: check-devel selinux-policy-devel
 BuildRequires: libmnl-devel libnl3-devel

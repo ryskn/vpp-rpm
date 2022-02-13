@@ -34,7 +34,6 @@ BuildRequires: check-devel selinux-policy-devel
 BuildRequires: libmnl-devel libnl3-devel
 BuildRequires: libffi-devel apr-devel numactl-devel
 BuildRequires: elfutils-libelf-devel libuuid-devel
-BuildRequires: libtool byacc bison flex
 BuildRequires: clang cmake ninja-build
 Requires: vpp-lib = %{version}-%{release}, vpp-selinux-policy = %{version}-%{release}, net-tools, pciutils
 Requires: mbedtls libffi-devel

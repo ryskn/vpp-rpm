@@ -24,8 +24,8 @@ Name: vpp
 Summary: Vector Packet Processing
 License: ASL 2.0
 Version: 23.02
-Release: 0.179.rc0.20221214git243a0433f%{?dist}
-Source: %{name}-%{version}-rc0~179_g243a0433f.tar.xz
+Release: 0.181.rc0.20221214git863d1c871%{?dist}
+Source: %{name}-%{version}-rc0~181_g863d1c871.tar.xz
 BuildRequires: vpp-ext-deps
 BuildRequires: systemd-rpm-macros chrpath
 BuildRequires: openssl openssl-devel

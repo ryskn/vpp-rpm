@@ -1,0 +1,13 @@
+--- vpp/src/vcl/ldp.c	2023-02-21 00:33:18.929034967 +0200
++++ vpp/src/vcl/ldp.c	2023-02-21 12:29:44.788641668 +0200
+@@ -39,6 +39,10 @@
+ #include <vppinfra/pool.h>
+ #include <vppinfra/hash.h>
+ 
++#ifndef UDP_SEGMENT
++#define UDP_SEGMENT     103     /* Set GSO segmentation size.  */
++#endif
++
+ #define HAVE_CONSTRUCTOR_ATTRIBUTE
+ #ifdef HAVE_CONSTRUCTOR_ATTRIBUTE
+ #define CONSTRUCTOR_ATTRIBUTE                       \

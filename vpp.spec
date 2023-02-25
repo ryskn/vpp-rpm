@@ -24,8 +24,10 @@ Name: vpp
 Summary: Vector Packet Processing
 License: ASL 2.0
 Version: 23.06
-Release: 0.67.rc0.20230220giteff5f7aea%{?dist}
-Source: %{name}-%{version}-rc0~67_geff5f7aea.tar.xz
+Release: 0.75.rc0.20230225git5035bf041%{?dist}
+Source: %{name}-%{version}-rc0~75_g5035bf041.tar.xz
+# missing UDP_SEGMENT definition in netinet/udp.h CentOS 8
+Patch0: vpp-udp_segmment.patch
 BuildRequires: vpp-ext-deps
 BuildRequires: systemd-rpm-macros chrpath
 BuildRequires: openssl openssl-devel
@@ -107,6 +109,7 @@ This package contains a tailored VPP SELinux policy
 
 %prep
 %setup -q -n %{name}-%{version}
+%patch0 -p1
 
 %pre
 # Add the vpp group

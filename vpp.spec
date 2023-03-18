@@ -309,6 +309,7 @@ fi
 /usr/bin/vat2
 /usr/bin/vpp*
 /usr/bin/svm*
+/usr/bin/test_infra
 %config(noreplace) /etc/sysctl.d/80-vpp.conf
 %config(noreplace) /etc/vpp/startup.conf
 /usr/share/vpp/api/*

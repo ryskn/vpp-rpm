@@ -24,8 +24,8 @@ Name: vpp
 Summary: Vector Packet Processing
 License: ASL 2.0
 Version: 23.06
-Release: 0.174.rc0.20230317git04bd0ea8e%{?dist}
-Source: %{name}-%{version}-rc0~174_g04bd0ea8e.tar.xz
+Release: 0.181.rc0.20230322gitb53b88a08%{?dist}
+Source: %{name}-%{version}-rc0~181_gb53b88a08.tar.xz
 BuildRequires: vpp-ext-deps
 BuildRequires: systemd-rpm-macros chrpath
 BuildRequires: openssl openssl-devel
@@ -309,7 +309,6 @@ fi
 /usr/bin/vat2
 /usr/bin/vpp*
 /usr/bin/svm*
-/usr/bin/test_infra
 %config(noreplace) /etc/sysctl.d/80-vpp.conf
 %config(noreplace) /etc/vpp/startup.conf
 /usr/share/vpp/api/*

@@ -33,7 +33,7 @@ BuildRequires: python3-devel python3-ply
 BuildRequires: check-devel selinux-policy-devel
 BuildRequires: libmnl-devel libnl3-devel
 BuildRequires: libffi-devel apr-devel numactl-devel
-BuildRequires: elfutils-libelf-devel
+BuildRequires: elfutils-libelf-devel libpcap-devel
 BuildRequires: clang cmake ninja-build
 Requires: vpp-lib = %{version}-%{release}, vpp-selinux-policy = %{version}-%{release}, net-tools, pciutils
 Requires: libffi-devel

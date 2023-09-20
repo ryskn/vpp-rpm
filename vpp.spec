@@ -1,4 +1,3 @@
-%undefine _auto_set_build_flags
 %define _mu_build_dir    %{_builddir}/%{name}-%{version}/build-root
 %define _vpp_install_dir install-vpp-native
 

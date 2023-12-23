@@ -307,11 +307,12 @@ fi
 %doc LICENSE MAINTAINERS README.md
 %defattr(-,bin,bin)
 %{_unitdir}/vpp.service
-/usr/bin/vat2
-/usr/bin/vpp*
-/usr/bin/svm*
-%config(noreplace) /etc/sysctl.d/80-vpp.conf
-%config(noreplace) /etc/vpp/startup.conf
+%{_bindir}/vat2
+%{_bindir}/vpp*
+%{_bindir}/svm*
+%dir %{_sysconfdir}/vpp
+%config(noreplace) %{_sysconfdir}/sysctl.d/80-vpp.conf
+%config(noreplace) %{_sysconfdir}/vpp/startup.conf
 
 %defattr(-,root,vpp)
 %{_localstatedir}/run/vpp*
@@ -322,10 +323,7 @@ fi
 %files lib
 %defattr(-,bin,bin)
 %global __requires_exclude_from %{_libdir}/librte_pmd_mlx[45]_glue\\.so.*$
-%exclude %{_libdir}/vpp_plugins
-%exclude %{_libdir}/vpp_api_test_plugins
-%exclude %{_libdir}/vat2_plugins
-%{_libdir}/*
+%{_libdir}/lib*.so.*
 %dir %{_datadir}/vpp
 %{_datadir}/vpp/api
 
@@ -345,10 +343,11 @@ fi
 
 %files devel
 %defattr(-,bin,bin)
-/usr/bin/vppapigen
-/usr/bin/vapi_c_gen.py
-/usr/bin/vapi_cpp_gen.py
-/usr/bin/vapi_json_parser.py
+%{_bindir}/vppapigen
+%{_bindir}/vapi_c_gen.py
+%{_bindir}/vapi_cpp_gen.py
+%{_bindir}/vapi_json_parser.py
+%{_libdir}/lib*.so
 %{_includedir}/*
 %dir %{_datadir}/doc/vpp/examples
 %{_datadir}/doc/vpp/examples/sample-plugin

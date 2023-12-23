@@ -331,6 +331,7 @@ fi
 
 %files api-lua
 %defattr(644,root,root,644)
+%dir %{_datadir}/doc/vpp/examples
 %{_datadir}/doc/vpp/examples/lua
 
 %files api-python3
@@ -349,6 +350,7 @@ fi
 /usr/bin/vapi_cpp_gen.py
 /usr/bin/vapi_json_parser.py
 %{_includedir}/*
+%dir %{_datadir}/doc/vpp/examples
 %{_datadir}/doc/vpp/examples/sample-plugin
 %{_datadir}/vpp/vppapigen*.py
 

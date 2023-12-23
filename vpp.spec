@@ -243,7 +243,7 @@ done
 
 for file in $(find %{_mu_build_dir}/%{_vpp_install_dir}/vpp/share/vpp/api/plugins -type f -name '*.api.json' -print )
 do
-	install -p -m 755 $file %{buildroot}/usr/share/vpp/api
+	install -p -m 644 $file %{buildroot}/usr/share/vpp/api
 done
 
 #

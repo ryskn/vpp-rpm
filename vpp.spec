@@ -304,6 +304,7 @@ if [ $1 -eq 0 ]; then
 fi
 
 %files
+%doc LICENSE MAINTAINERS README.md
 %defattr(-,bin,bin)
 %{_unitdir}/vpp.service
 /usr/bin/vat2
@@ -311,7 +312,6 @@ fi
 /usr/bin/svm*
 %config(noreplace) /etc/sysctl.d/80-vpp.conf
 %config(noreplace) /etc/vpp/startup.conf
-/usr/share/vpp/api/*
 
 %defattr(-,root,vpp)
 %{_localstatedir}/run/vpp*
@@ -326,11 +326,12 @@ fi
 %exclude %{_libdir}/vpp_api_test_plugins
 %exclude %{_libdir}/vat2_plugins
 %{_libdir}/*
-/usr/share/vpp/api/*
+%dir %{_datadir}/vpp
+%{_datadir}/vpp/api
 
 %files api-lua
 %defattr(644,root,root,644)
-/usr/share/doc/vpp/examples/lua
+%{_datadir}/doc/vpp/examples/lua
 
 %files api-python3
 %defattr(644,root,root,755)
@@ -348,12 +349,11 @@ fi
 /usr/bin/vapi_cpp_gen.py
 /usr/bin/vapi_json_parser.py
 %{_includedir}/*
-/usr/share/doc/vpp/examples/sample-plugin
-/usr/share/vpp
+%{_datadir}/doc/vpp/examples/sample-plugin
+%{_datadir}/vpp/vppapigen*.py
 
 %files plugins
 %defattr(-,bin,bin)
-/usr/%{_lib}/vpp_plugins/
-/usr/%{_lib}/vpp_api_test_plugins/
-/usr/%{_lib}/vat2_plugins/
-/usr/share/vpp/api/*
+%{_libdir}/vpp_plugins
+%{_libdir}/vpp_api_test_plugins
+%{_libdir}/vat2_plugins

@@ -24,19 +24,18 @@ Name: vpp
 Summary: Vector Packet Processing
 License: ASL 2.0
 Version: 24.02
-Release: 0.204.rc0.20231223git98d24a5fe%{?dist}
-Source: %{name}-%{version}-rc0~204_g98d24a5fe.tar.xz
+Release: 0.205.rc0.20231223git44d9cbc49%{?dist}
+Source: %{name}-%{version}-rc0~205_g44d9cbc49.tar.xz
 BuildRequires: vpp-ext-deps
 BuildRequires: systemd-rpm-macros chrpath
 BuildRequires: openssl openssl-devel
 BuildRequires: python3-devel python3-ply
 BuildRequires: check-devel selinux-policy-devel
 BuildRequires: libmnl-devel libnl3-devel
-BuildRequires: libffi-devel apr-devel numactl-devel
+BuildRequires: apr-devel numactl-devel
 BuildRequires: elfutils-libelf-devel libpcap-devel
 BuildRequires: clang cmake ninja-build
 Requires: vpp-lib = %{version}-%{release}, vpp-selinux-policy = %{version}-%{release}, net-tools, pciutils
-Requires: libffi-devel
 
 %description
 This package provides VPP executables: vpp, vpp_api_test, vpp_json_test
@@ -90,7 +89,7 @@ This package contains the lua bindings for the vpp api
 %package api-python3
 Summary: VPP api python3 bindings
 Group: Development/Libraries
-Requires: vpp = %{version}-%{release}, vpp-lib = %{version}-%{release}, libffi-devel
+Requires: vpp = %{version}-%{release}, vpp-lib = %{version}-%{release}
 Requires: python3-setuptools
 
 %description api-python3

@@ -308,7 +308,9 @@ fi
 %defattr(-,bin,bin)
 %{_unitdir}/vpp.service
 %{_bindir}/vat2
-%{_bindir}/vpp*
+%{_bindir}/vpp
+%{_bindir}/vppctl
+%{_bindir}/vpp_*
 %{_bindir}/svm*
 %dir %{_sysconfdir}/vpp
 %config(noreplace) %{_sysconfdir}/sysctl.d/80-vpp.conf

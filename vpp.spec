@@ -323,7 +323,6 @@ fi
 
 %files lib
 %defattr(-,bin,bin)
-%global __requires_exclude_from %{_libdir}/librte_pmd_mlx[45]_glue\\.so.*$
 %{_libdir}/lib*.so.*
 %dir %{_datadir}/vpp
 %{_datadir}/vpp/api

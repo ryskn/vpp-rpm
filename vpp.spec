@@ -350,7 +350,6 @@ fi
 %{_bindir}/vapi_json_parser.py
 %{_libdir}/lib*.so
 %{_includedir}/*
-%dir %{_datadir}/doc/vpp
 %dir %{_datadir}/doc/vpp/examples
 %{_datadir}/doc/vpp/examples/sample-plugin
 %{_datadir}/vpp/vppapigen*.py

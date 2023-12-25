@@ -30,7 +30,8 @@ BuildRequires: vpp-ext-deps
 BuildRequires: systemd-rpm-macros chrpath
 BuildRequires: openssl openssl-devel
 BuildRequires: python3-devel python3-ply
-BuildRequires: check-devel selinux-policy-devel
+BuildRequires: check-devel subunit-devel
+BuildRequires: selinux-policy-devel
 BuildRequires: libmnl-devel libnl3-devel
 BuildRequires: apr-devel numactl-devel
 BuildRequires: elfutils-libelf-devel libpcap-devel
@@ -342,11 +343,6 @@ fi
 %attr(0644,root,root) %{_datadir}/selinux/devel/include/%{moduletype}/*.if
 
 %files devel
-%defattr(644,root,root,755)
-%dir %{_datadir}/doc/vpp
-%dir %{_datadir}/doc/vpp/examples
-%{_datadir}/doc/vpp/examples/sample-plugin
-%{_includedir}/*
 %defattr(-,bin,bin)
 %{_bindir}/vppapigen
 %{_bindir}/vapi_c_gen.py
@@ -354,6 +350,11 @@ fi
 %{_bindir}/vapi_json_parser.py
 %{_libdir}/lib*.so
 %{_datadir}/vpp/vppapigen*.py
+%defattr(644,root,root,755)
+%dir %{_datadir}/doc/vpp
+%dir %{_datadir}/doc/vpp/examples
+%{_datadir}/doc/vpp/examples/sample-plugin
+%{_includedir}/*
 
 %files plugins
 %defattr(-,bin,bin)

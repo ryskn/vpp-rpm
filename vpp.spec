@@ -325,6 +325,8 @@ fi
 %files lib
 %defattr(-,bin,bin)
 %{_libdir}/lib*.so.*
+%{_libdir}/libvcl_ldpreload.so
+%{_libdir}/libvppmem_preload.so
 %dir %{_datadir}/vpp
 %{_datadir}/vpp/api
 
@@ -349,6 +351,8 @@ fi
 %{_bindir}/vapi_cpp_gen.py
 %{_bindir}/vapi_json_parser.py
 %{_libdir}/lib*.so
+%exclude %{_libdir}/libvcl_ldpreload.so
+%exclude %{_libdir}/libvppmem_preload.so
 %{_datadir}/vpp/vppapigen*.py
 %defattr(644,root,root,755)
 %dir %{_datadir}/doc/vpp

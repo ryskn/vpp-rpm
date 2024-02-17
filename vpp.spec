@@ -113,7 +113,7 @@ This package contains a tailored VPP SELinux policy
 groupadd -f -r vpp
 
 %build
-make -C build-root PLATFORM=vpp TAG=vpp install-packages
+make -C build-root V=1 PLATFORM=vpp TAG=vpp install-packages
 cd %{_mu_build_dir}/../src/vpp-api/python && %py3_build
 cd %{_mu_build_dir}/../extras/selinux && make -f %{_datadir}/selinux/devel/Makefile
 
@@ -126,7 +126,7 @@ mkdir -p -m755 %{buildroot}%{_unitdir}
 install -p -m 755 %{_mu_build_dir}/%{_vpp_install_dir}/vpp/bin/* %{buildroot}%{_bindir}
 
 # api
-mkdir -p -m755 %{buildroot}/usr/share/vpp/api
+mkdir -p -m755 %{buildroot}/usr/share/vpp/api/{core,plugins}
 
 #
 # configs
@@ -154,9 +154,9 @@ do
 	( cd %{buildroot}%{_libdir} && 
           ln -fs $file $(echo $file | sed -e 's/\(\.so\)\.[0-9]\+.*/\1/') )
 done
-for file in $(find %{_mu_build_dir}/%{_vpp_install_dir}/vpp/share/vpp/api  -type f -name '*.api.json' -print )
+for file in $(find %{_mu_build_dir}/%{_vpp_install_dir}/vpp/share/vpp/api/core  -type f -name '*.api.json' -print )
 do
-	install -p -m 644 $file %{buildroot}/usr/share/vpp/api
+	install -p -m 644 $file %{buildroot}/usr/share/vpp/api/core
 done
 
 # Lua bindings
@@ -200,8 +200,16 @@ do
 	done
 done
 
-install -p -m 644 %{_mu_build_dir}/../src/tools/vppapigen/vppapigen_c.py %{buildroot}/usr/share/vpp
-install -p -m 644 %{_mu_build_dir}/../src/tools/vppapigen/vppapigen_json.py %{buildroot}/usr/share/vpp
+for file in $(find %{_mu_build_dir}/%{_vpp_install_dir}/vpp/share/vpp -type f -name '*.py' -print )
+do
+	install -p -m 644 $file %{buildroot}/usr/share/vpp
+done
+
+mkdir -p -m755 %{buildroot}/usr/%{_lib}/cmake/vpp
+for file in $(find %{_mu_build_dir}/%{_vpp_install_dir}/vpp/%{_lib}/cmake/vpp -type f -print )
+do
+	install -p -m 644 $file %{buildroot}/usr/%{_lib}/cmake/vpp
+done
 
 # sample plugin
 mkdir -p -m755 %{buildroot}/usr/share/doc/vpp/examples/sample-plugin/sample
@@ -243,7 +251,7 @@ done
 
 for file in $(find %{_mu_build_dir}/%{_vpp_install_dir}/vpp/share/vpp/api/plugins -type f -name '*.api.json' -print )
 do
-	install -p -m 644 $file %{buildroot}/usr/share/vpp/api
+	install -p -m 644 $file %{buildroot}/usr/share/vpp/api/plugins
 done
 
 #
@@ -328,7 +336,8 @@ fi
 %{_libdir}/libvcl_ldpreload.so
 %{_libdir}/libvppmem_preload.so
 %dir %{_datadir}/vpp
-%{_datadir}/vpp/api
+%dir %{_datadir}/vpp/api
+%{_datadir}/vpp/api/core
 
 %files api-lua
 %defattr(644,root,root,755)
@@ -351,9 +360,10 @@ fi
 %{_bindir}/vapi_cpp_gen.py
 %{_bindir}/vapi_json_parser.py
 %{_libdir}/lib*.so
+%{_libdir}/cmake/vpp
 %exclude %{_libdir}/libvcl_ldpreload.so
 %exclude %{_libdir}/libvppmem_preload.so
-%{_datadir}/vpp/vppapigen*.py
+%{_datadir}/vpp/*.py
 %defattr(644,root,root,755)
 %dir %{_datadir}/doc/vpp
 %dir %{_datadir}/doc/vpp/examples
@@ -365,3 +375,4 @@ fi
 %{_libdir}/vpp_plugins
 %{_libdir}/vpp_api_test_plugins
 %{_libdir}/vat2_plugins
+%{_datadir}/vpp/api/plugins

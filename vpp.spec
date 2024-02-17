@@ -1,6 +1,4 @@
 %undefine _auto_set_build_flags
-%define _mu_build_dir    %{_builddir}/%{name}-%{version}/build-root
-%define _vpp_install_dir install-vpp-native
 
 %{?systemd_requires}
 
@@ -24,8 +22,8 @@ Name: vpp
 Summary: Vector Packet Processing
 License: ASL 2.0
 Version: 24.06
-Release: 0.42.rc0.20240216git81a6ffced%{?dist}
-Source: %{name}-%{version}-rc0~42_g81a6ffced.tar.xz
+Release: 0.43.rc0.20240217gitd1e17a873%{?dist}
+Source: %{name}-%{version}-rc0~43_gd1e17a873.tar.xz
 BuildRequires: vpp-ext-deps
 BuildRequires: systemd-rpm-macros chrpath
 BuildRequires: openssl openssl-devel
@@ -114,150 +112,46 @@ groupadd -f -r vpp
 
 %build
 make -C build-root V=1 PLATFORM=vpp TAG=vpp install-packages
-cd %{_mu_build_dir}/../src/vpp-api/python && %py3_build
-cd %{_mu_build_dir}/../extras/selinux && make -f %{_datadir}/selinux/devel/Makefile
+cd extras/selinux && make -f %{_datadir}/selinux/devel/Makefile
 
 %install
-#
-# binaries
-#
-mkdir -p -m755 %{buildroot}%{_bindir}
-mkdir -p -m755 %{buildroot}%{_unitdir}
-install -p -m 755 %{_mu_build_dir}/%{_vpp_install_dir}/vpp/bin/* %{buildroot}%{_bindir}
+mkdir -p -m755 %{buildroot}/usr
+mv build-root/install-vpp-native/vpp/{bin,lib,lib64,include,share} %{buildroot}/usr/
+mv build-root/install-vpp-native/vpp/etc %{buildroot}
 
-# api
-mkdir -p -m755 %{buildroot}/usr/share/vpp/api/{core,plugins}
+# remove RPATH from ELF binaries
+build-root/scripts/remove-rpath %{buildroot}
 
-#
-# configs
-#
-mkdir -p -m755 %{buildroot}/etc/vpp
-mkdir -p -m755 %{buildroot}/etc/sysctl.d
-install -p -m 644 %{_mu_build_dir}/../extras/rpm/vpp.service %{buildroot}%{_unitdir}
-install -p -m 644 %{_mu_build_dir}/../src/vpp/conf/startup.conf %{buildroot}/etc/vpp/startup.conf
-install -p -m 644 %{_mu_build_dir}/../src/vpp/conf/80-vpp.conf %{buildroot}/etc/sysctl.d
-#
-# libraries
-#
-mkdir -p -m755 %{buildroot}%{_libdir}
-mkdir -p -m755 %{buildroot}/etc/bash_completion.d
-mkdir -p -m755 %{buildroot}/usr/share/vpp
-for file in $(find %{_mu_build_dir}/%{_vpp_install_dir}/*/lib* -type f -name '*.so.*.*' -print )
+# make lib symlinks
+for file in $(cd %{buildroot}%{_libdir} && find . -maxdepth 1 -type f -print | sed -e 's/^\.\///')
 do
-	install -p -m 755 $file %{buildroot}%{_libdir}
-done
-for file in $(cd %{buildroot}%{_libdir} && find . -type f -print | sed -e 's/^\.\///')
-do
-	# make lib symlinks
-	( cd %{buildroot}%{_libdir} && 
+	( cd %{buildroot}%{_libdir} &&
           ln -fs $file $(echo $file | sed -e 's/\(\.so\.[0-9]\+\).*/\1/') )
-	( cd %{buildroot}%{_libdir} && 
-          ln -fs $file $(echo $file | sed -e 's/\(\.so\)\.[0-9]\+.*/\1/') )
-done
-for file in $(find %{_mu_build_dir}/%{_vpp_install_dir}/vpp/share/vpp/api/core  -type f -name '*.api.json' -print )
-do
-	install -p -m 644 $file %{buildroot}/usr/share/vpp/api/core
 done
 
-# Lua bindings
-mkdir -p -m755 %{buildroot}/usr/share/doc/vpp/examples/lua/examples/cli
-mkdir -p -m755 %{buildroot}/usr/share/doc/vpp/examples/lua/examples/lute
-# for file in $(cd %{_mu_build_dir}/%{_vpp_install_dir}/../../src/vpp-api/lua && git ls-files .)
-for file in $(cd %{_mu_build_dir}/%{_vpp_install_dir}/../../src/vpp-api/lua && find . -type f -regex '.*/*.[luteamd]' -print | sed -e 's/^\.\///')
-do
-	( cd %{_mu_build_dir}/%{_vpp_install_dir}/../../src/vpp-api/lua && install -p -m 644 $file \
-	   %{buildroot}/usr/share/doc/vpp/examples/lua/$file )
-done
-
-# Python bindings
-cd %{_mu_build_dir}/../src/vpp-api/python && %py3_install
-
-# SELinux Policy
-# Install SELinux interfaces
-%_format INTERFACES %{_mu_build_dir}/../extras/selinux/$x.if
-install -d %{buildroot}%{_datadir}/selinux/devel/include/%{moduletype}
-install -p -m 644 $INTERFACES \
-    %{buildroot}%{_datadir}/selinux/devel/include/%{moduletype}
-
-# Install policy modules
-%_format MODULES %{_mu_build_dir}/../extras/selinux/$x.pp
-install -d %{buildroot}%{_datadir}/selinux/packages
-install -m 0644 $MODULES \
-    %{buildroot}%{_datadir}/selinux/packages
-
-#
-# devel
-#
-for dir in %{_mu_build_dir}/%{_vpp_install_dir}/vpp/include/
-do
-	for subdir in $(cd ${dir} && find . -type d -print)
-	do
-		mkdir -p -m755 %{buildroot}/usr/include/${subdir}
-	done
-	for file in $(cd ${dir} && find . -type f -print)
-	do
-		install -p -m 644 $dir/$file %{buildroot}%{_includedir}/$file
-	done
-done
-
-for file in $(find %{_mu_build_dir}/%{_vpp_install_dir}/vpp/share/vpp -type f -name '*.py' -print )
-do
-	install -p -m 644 $file %{buildroot}/usr/share/vpp
-done
-
-mkdir -p -m755 %{buildroot}/usr/%{_lib}/cmake/vpp
-for file in $(find %{_mu_build_dir}/%{_vpp_install_dir}/vpp/%{_lib}/cmake/vpp -type f -print )
-do
-	install -p -m 644 $file %{buildroot}/usr/%{_lib}/cmake/vpp
-done
-
-# sample plugin
-mkdir -p -m755 %{buildroot}/usr/share/doc/vpp/examples/sample-plugin/sample
-#for file in $(cd %{_mu_build_dir}/%{_vpp_install_dir}/../../src/examples/sample-plugin && git ls-files .)
-for file in $(cd %{_mu_build_dir}/%{_vpp_install_dir}/../../src/examples/sample-plugin && find . -type f -regex '.*/*.[acdhimp]' -print | sed -e 's/^\.\///')
-do
-	( cd %{_mu_build_dir}/%{_vpp_install_dir}/../../src/examples/sample-plugin && install -p -m 644 $file \
-	   %{buildroot}/usr/share/doc/vpp/examples/sample-plugin/$file )
-done
+mkdir -p -m755 %{buildroot}%{_unitdir}
+install -p -m 644 extras/rpm/vpp.service %{buildroot}%{_unitdir}
 
 # vppctl sockfile directory
 mkdir -p -m755 %{buildroot}%{_localstatedir}/run/vpp
 # vpp.log directory
 mkdir -p -m755 %{buildroot}%{_localstatedir}/log/vpp
 
-#
-# vpp-plugins
-#
-mkdir -p -m755 %{buildroot}/usr/%{_lib}/vpp_plugins
-mkdir -p -m755 %{buildroot}/usr/%{_lib}/vpp_api_test_plugins
-mkdir -p -m755 %{buildroot}/usr/%{_lib}/vat2_plugins
-for file in $(cd %{_mu_build_dir}/%{_vpp_install_dir}/vpp/%{_lib}/vpp_plugins && find -type f -print)
-do
-        install -p -m 755 %{_mu_build_dir}/%{_vpp_install_dir}/vpp/%{_lib}/vpp_plugins/$file \
-           %{buildroot}/usr/%{_lib}/vpp_plugins/$file
-done
+# SELinux Policy
+# Install SELinux interfaces
+%_format INTERFACES extras/selinux/$x.if
+install -d %{buildroot}%{_datadir}/selinux/devel/include/%{moduletype}
+install -p -m 644 $INTERFACES %{buildroot}%{_datadir}/selinux/devel/include/%{moduletype}
+# Install policy modules
+%_format MODULES extras/selinux/$x.pp
+install -d %{buildroot}%{_datadir}/selinux/packages
+install -m 0644 $MODULES %{buildroot}%{_datadir}/selinux/packages
 
-for file in $(cd %{_mu_build_dir}/%{_vpp_install_dir}/vpp/%{_lib}/vpp_api_test_plugins && find -type f -print)
-do
-        install -p -m 755 %{_mu_build_dir}/%{_vpp_install_dir}/vpp/%{_lib}/vpp_api_test_plugins/$file \
-           %{buildroot}/usr/%{_lib}/vpp_api_test_plugins/$file
-done
-
-for file in $(cd %{_mu_build_dir}/%{_vpp_install_dir}/vpp/%{_lib}/vat2_plugins && find -type f -print)
-do
-        install -p -m 755 %{_mu_build_dir}/%{_vpp_install_dir}/vpp/%{_lib}/vat2_plugins/$file \
-           %{buildroot}/usr/%{_lib}/vat2_plugins/$file
-done
-
-for file in $(find %{_mu_build_dir}/%{_vpp_install_dir}/vpp/share/vpp/api/plugins -type f -name '*.api.json' -print )
-do
-	install -p -m 644 $file %{buildroot}/usr/share/vpp/api/plugins
-done
-
-#
-# remove RPATH from ELF binaries
-#
-%{_mu_build_dir}/scripts/remove-rpath %{buildroot}
+# sample plugin
+mkdir -p -m755 %{buildroot}%{_datadir}/doc/vpp/examples/sample-plugin/sample
+cp -p src/examples/sample-plugin/sample/{*c,*h,*api} %{buildroot}%{_datadir}/doc/vpp/examples/sample-plugin/sample
+# Lua bindings
+cp -pr src/vpp-api/lua %{buildroot}%{_datadir}/doc/vpp/examples
 
 %post
 if [ $1 -eq 1 ] ; then

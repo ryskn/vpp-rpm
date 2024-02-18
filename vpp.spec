@@ -22,8 +22,8 @@ Name: vpp
 Summary: Vector Packet Processing
 License: ASL 2.0
 Version: 24.06
-Release: 0.43.rc0.20240217gitd1e17a873%{?dist}
-Source: %{name}-%{version}-rc0~43_gd1e17a873.tar.xz
+Release: 0.55.rc0.20240218git9a97fb8ad%{?dist}
+Source: %{name}-%{version}-rc0~55_g9a97fb8ad.tar.xz
 BuildRequires: vpp-ext-deps
 BuildRequires: systemd-rpm-macros chrpath
 BuildRequires: openssl openssl-devel
@@ -126,7 +126,7 @@ build-root/scripts/remove-rpath %{buildroot}
 for file in $(cd %{buildroot}%{_libdir} && find . -maxdepth 1 -type f -print | sed -e 's/^\.\///')
 do
 	( cd %{buildroot}%{_libdir} &&
-          ln -fs $file $(echo $file | sed -e 's/\(\.so\.[0-9]\+\).*/\1/') )
+          ln -s $file $(echo $file | sed -e 's/\(\.so\.[0-9]\+\).*/\1/') )
 done
 
 mkdir -p -m755 %{buildroot}%{_unitdir}
@@ -250,11 +250,9 @@ fi
 %files devel
 %defattr(-,bin,bin)
 %{_bindir}/vppapigen
-%{_bindir}/vapi_c_gen.py
-%{_bindir}/vapi_cpp_gen.py
-%{_bindir}/vapi_json_parser.py
-%{_libdir}/lib*.so
+%{_bindir}/vapi_*.py
 %{_libdir}/cmake/vpp
+%{_libdir}/lib*.so
 %exclude %{_libdir}/libvcl_ldpreload.so
 %exclude %{_libdir}/libvppmem_preload.so
 %{_datadir}/vpp/*.py

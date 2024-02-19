@@ -22,8 +22,8 @@ Name: vpp
 Summary: Vector Packet Processing
 License: ASL 2.0
 Version: 24.06
-Release: 0.55.rc0.20240218git9a97fb8ad%{?dist}
-Source: %{name}-%{version}-rc0~55_g9a97fb8ad.tar.xz
+Release: 0.56.rc0.20240218git37127f7bc%{?dist}
+Source: %{name}-%{version}-rc0~56_g37127f7bc.tar.xz
 BuildRequires: vpp-ext-deps
 BuildRequires: systemd-rpm-macros chrpath
 BuildRequires: openssl openssl-devel
@@ -121,13 +121,6 @@ mv build-root/install-vpp-native/vpp/etc %{buildroot}
 
 # remove RPATH from ELF binaries
 build-root/scripts/remove-rpath %{buildroot}
-
-# make lib symlinks
-for file in $(cd %{buildroot}%{_libdir} && find . -maxdepth 1 -type f -print | sed -e 's/^\.\///')
-do
-	( cd %{buildroot}%{_libdir} &&
-          ln -s $file $(echo $file | sed -e 's/\(\.so\.[0-9]\+\).*/\1/') )
-done
 
 mkdir -p -m755 %{buildroot}%{_unitdir}
 install -p -m 644 extras/rpm/vpp.service %{buildroot}%{_unitdir}

@@ -116,8 +116,8 @@ cd extras/selinux && make -f %{_datadir}/selinux/devel/Makefile
 
 %install
 mkdir -p -m755 %{buildroot}/usr
-mv build-root/install-vpp-native/vpp/{bin,lib,lib64,include,share} %{buildroot}/usr/
-mv build-root/install-vpp-native/vpp/etc %{buildroot}
+cp -pr build-root/install-vpp-native/vpp/{bin,lib,lib64,include,share} %{buildroot}/usr/
+cp -pr build-root/install-vpp-native/vpp/etc %{buildroot}
 
 # remove RPATH from ELF binaries
 build-root/scripts/remove-rpath %{buildroot}

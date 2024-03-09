@@ -22,8 +22,8 @@ Name: vpp
 Summary: Vector Packet Processing
 License: ASL 2.0
 Version: 24.06
-Release: 0.90.rc0.20240304git4b6614030%{?dist}
-Source: %{name}-%{version}-rc0~90_g4b6614030.tar.xz
+Release: 0.102.rc0.20240307git4c7305f12%{?dist}
+Source: %{name}-%{version}-rc0~102_g4c7305f12.tar.xz
 BuildRequires: vpp-ext-deps
 BuildRequires: systemd-rpm-macros chrpath
 BuildRequires: openssl openssl-devel
@@ -236,6 +236,7 @@ fi
 %{python3_sitelib}/vpp_*
 
 %files selinux-policy
+%doc extras/selinux/selinux_doc.rst
 %defattr(-,root,root,0755)
 %attr(0644,root,root) %{_datadir}/selinux/packages/*.pp
 %attr(0644,root,root) %{_datadir}/selinux/devel/include/%{moduletype}/*.if

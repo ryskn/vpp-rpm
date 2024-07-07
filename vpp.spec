@@ -34,6 +34,9 @@ BuildRequires: libmnl-devel libnl3-devel
 BuildRequires: apr-devel numactl-devel libunwind-devel
 BuildRequires: elfutils-libelf-devel libpcap-devel
 BuildRequires: clang cmake ninja-build
+%if 0%{?fedora} >= 41
+BuildRequires: openssl-devel-engine
+%endif
 Requires: vpp-lib = %{version}-%{release}, vpp-selinux-policy = %{version}-%{release}, net-tools, pciutils
 
 %description

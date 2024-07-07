@@ -22,8 +22,8 @@ Name: vpp
 Summary: Vector Packet Processing
 License: ASL 2.0
 Version: 24.10
-Release: 0.85.rc0.20240630git1b8cef111%{?dist}
-Source: %{name}-%{version}-rc0~85_g1b8cef111.tar.xz
+Release: 0.88.rc0.20240703gite3469369d%{?dist}
+Source: %{name}-%{version}-rc0~88_ge3469369d.tar.xz
 BuildRequires: vpp-ext-deps
 BuildRequires: systemd-rpm-macros chrpath
 BuildRequires: openssl openssl-devel
@@ -37,7 +37,7 @@ BuildRequires: clang cmake ninja-build
 Requires: vpp-lib = %{version}-%{release}, vpp-selinux-policy = %{version}-%{release}, net-tools, pciutils
 
 %description
-This package provides VPP executables: vpp, vpp_api_test, vpp_json_test
+This package provides VPP executables: vpp, vpp_api_test
 vpp - the vector packet engine
 vpp_api_test - vector packet engine API test tool
 

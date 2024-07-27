@@ -22,10 +22,10 @@ Name: vpp
 Summary: Vector Packet Processing
 License: ASL 2.0
 Version: 24.10
-Release: 0.125.rc0.20240719gite87a03f7a%{?dist}
-Source: %{name}-%{version}-rc0~125_ge87a03f7a.tar.xz
+Release: 0.144.rc0.20240727gitdd4356dc9%{?dist}
+Source: %{name}-%{version}-rc0~144_gdd4356dc9.tar.xz
 BuildRequires: vpp-ext-deps
-BuildRequires: systemd-rpm-macros chrpath
+BuildRequires: systemd chrpath
 BuildRequires: openssl openssl-devel
 BuildRequires: python3-devel python3-ply
 BuildRequires: check-devel subunit-devel
@@ -128,7 +128,7 @@ mkdir -p -m755 %{buildroot}%{_unitdir}
 install -p -m 644 extras/rpm/vpp.service %{buildroot}%{_unitdir}
 
 # vppctl sockfile directory
-mkdir -p -m755 %{buildroot}%{_localstatedir}/run/vpp
+mkdir -p -m755 %{buildroot}%{_rundir}/vpp
 # vpp.log directory
 mkdir -p -m755 %{buildroot}%{_localstatedir}/log/vpp
 
@@ -214,7 +214,7 @@ fi
 %config(noreplace) %{_sysconfdir}/vpp/startup.conf
 
 %defattr(-,root,vpp)
-%{_localstatedir}/run/vpp*
+%{_rundir}/vpp
 
 %defattr(-,root,root)
 %{_localstatedir}/log/vpp*

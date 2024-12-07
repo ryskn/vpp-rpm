@@ -25,8 +25,7 @@ Version: 25.02
 Release: 0.162.rc0.20241207git0ec906694%{?dist}
 Source: %{name}-%{version}-rc0~162_g0ec906694.tar.xz
 BuildRequires: vpp-ext-deps
-BuildRequires: systemd chrpath
-BuildRequires: openssl openssl-devel
+BuildRequires: systemd chrpath openssl-devel
 BuildRequires: python3-devel python3-ply
 BuildRequires: check-devel subunit-devel
 BuildRequires: selinux-policy-devel

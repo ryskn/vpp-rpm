@@ -22,15 +22,16 @@ Name: vpp
 Summary: Vector Packet Processing
 License: ASL 2.0
 Version: 25.02
-Release: 0.163.rc0.20241207gitb8af24b26%{?dist}
-Source: %{name}-%{version}-rc0~163_gb8af24b26.tar.xz
+Release: 0.190.rc0.20241213gitf5b832e72%{?dist}
+Source: %{name}-%{version}-rc0~190_gf5b832e72.tar.xz
 BuildRequires: vpp-ext-deps
-BuildRequires: systemd chrpath openssl-devel
+BuildRequires: systemd chrpath
 BuildRequires: python3-devel python3-ply
 BuildRequires: check-devel subunit-devel
 BuildRequires: selinux-policy-devel
 BuildRequires: libmnl-devel libnl3-devel
-BuildRequires: apr-devel numactl-devel libunwind-devel
+BuildRequires: apr-devel numactl-devel
+BuildRequires: openssl-devel libunwind-devel
 BuildRequires: elfutils-libelf-devel libpcap-devel
 BuildRequires: clang cmake ninja-build
 %if 0%{?fedora} >= 41

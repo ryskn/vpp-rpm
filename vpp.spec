@@ -262,5 +262,6 @@ fi
 %defattr(-,bin,bin)
 %{_libdir}/vpp_plugins
 %{_libdir}/vpp_api_test_plugins
+%{_libdir}/vpp_crypto_engines
 %{_libdir}/vat2_plugins
 %{_datadir}/vpp/api/plugins

@@ -34,7 +34,7 @@ BuildRequires: apr-devel numactl-devel
 BuildRequires: openssl-devel libunwind-devel
 BuildRequires: elfutils-libelf-devel libpcap-devel
 BuildRequires: clang cmake ninja-build
-%if 0%{?fedora} >= 41 || 0%{?rhel} >= 10
+%if 0%{?fedora} >= 41
 BuildRequires: openssl-devel-engine
 %endif
 Requires: vpp-lib = %{version}-%{release}, vpp-selinux-policy = %{version}-%{release}, net-tools, pciutils
@@ -113,6 +113,10 @@ This package contains a tailored VPP SELinux policy
 groupadd -f -r vpp
 
 %build
+%if 0%{?rhel} >= 10
+export VPP_EXCLUDED_PLUGINS=tlsopenssl
+%endif
+
 make -C build-root V=1 PLATFORM=vpp TAG=vpp install-packages
 cd extras/selinux && make -f %{_datadir}/selinux/devel/Makefile
 

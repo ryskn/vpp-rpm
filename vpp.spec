@@ -209,6 +209,7 @@ fi
 %defattr(-,bin,bin)
 %{_unitdir}/vpp.service
 %{_bindir}/vat2
+%{_bindir}/vcl_test_*
 %{_bindir}/vpp
 %{_bindir}/vppctl
 %{_bindir}/vpp_*

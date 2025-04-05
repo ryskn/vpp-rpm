@@ -1,4 +1,5 @@
 %undefine _auto_set_build_flags
+%define _use_weak_usergroup_deps 1
 
 %{?systemd_requires}
 
@@ -22,8 +23,8 @@ Name: vpp
 Summary: Vector Packet Processing
 License: ASL 2.0
 Version: 25.06
-Release: 0.129.rc0.20250328git6132c8839%{?dist}
-Source: %{name}-%{version}-rc0~129_g6132c8839.tar.xz
+Release: 0.144.rc0.20250404gita86d7614e%{?dist}
+Source: %{name}-%{version}-rc0~144_ga86d7614e.tar.xz
 BuildRequires: vpp-ext-deps
 BuildRequires: systemd chrpath
 BuildRequires: python3-devel python3-ply

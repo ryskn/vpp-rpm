@@ -27,7 +27,7 @@ Release: 0.164.rc0.20250723gitf22e84b9b%{?dist}
 Source: %{name}-%{version}-rc0~164_gf22e84b9b.tar.xz
 BuildRequires: vpp-ext-deps
 BuildRequires: systemd chrpath
-BuildRequires: python3-devel python3-ply python3-pip
+BuildRequires: python3-devel python3-ply python3-pip python3-wheel
 BuildRequires: check-devel subunit-devel
 BuildRequires: selinux-policy-devel
 BuildRequires: libmnl-devel libnl3-devel

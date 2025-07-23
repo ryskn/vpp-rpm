@@ -111,7 +111,7 @@ This package contains a tailored VPP SELinux policy
 %setup -q -n %{name}-%{version}
 
 %if 0%{?rhel} == 8
-%patch -P 0 -p1 -r
+%patch -P 0 -p1 -R
 %else
 sed -i -r 's/--no-deps/--no-deps --no-build-isolation/' src/vpp-api/python/CMakeLists.txt
 %endif

@@ -1,0 +1,40 @@
+From f22e84b9b9ff70a45f8d5e47f6d516324b81f8c8 Mon Sep 17 00:00:00 2001
+From: Damjan Marion <damarion@cisco.com>
+Date: Thu, 17 Jul 2025 22:33:55 +0000
+Subject: [PATCH] papi: fix deprecated call to setup.py
+
+Type: fix
+Change-Id: I0e5e61395b619e28cf75cde1770d631b47e8c0b7
+Signed-off-by: Damjan Marion <damarion@cisco.com>
+---
+ src/vpp-api/python/CMakeLists.txt | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
+
+diff --git a/src/vpp-api/python/CMakeLists.txt b/src/vpp-api/python/CMakeLists.txt
+index 3059619ff21a..7e6d7a63c2b9 100644
+--- a/src/vpp-api/python/CMakeLists.txt
++++ b/src/vpp-api/python/CMakeLists.txt
+@@ -19,13 +19,17 @@ install(
+   CODE "
+   execute_process(
+     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+-    COMMAND ${PYTHON_EXECUTABLE} ./setup.py
+-      install
++    COMMAND ${PYTHON_EXECUTABLE} -m pip
++      install .
++	--disable-pip-version-check
+ 	--root=\$ENV{DESTDIR}/
+ 	--prefix=${CMAKE_INSTALL_PREFIX}
+-	--single-version-externally-managed
+-	bdist_egg
+-    OUTPUT_QUIET
+-  )"
++	--no-deps
++    RESULT_VARIABLE _pip_result
++  )
++  if(NOT _pip_result EQUAL 0)
++    message(FATAL_ERROR \"pip install failed with code: \${_pip_result}\")
++  endif()
++  "
+   COMPONENT vpp-api-python
+ )

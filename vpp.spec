@@ -25,6 +25,7 @@ License: ASL 2.0
 Version: 25.10
 Release: 0.164.rc0.20250723gitf22e84b9b%{?dist}
 Source: %{name}-%{version}-rc0~164_gf22e84b9b.tar.xz
+Patch0: https://github.com/FDio/vpp/commit/f22e84b9b9ff70a45f8d5e47f6d516324b81f8c8.patch
 BuildRequires: vpp-ext-deps
 BuildRequires: systemd chrpath
 BuildRequires: python3-devel python3-ply python3-pip python3-wheel
@@ -109,7 +110,11 @@ This package contains a tailored VPP SELinux policy
 %prep
 %setup -q -n %{name}-%{version}
 
+%if 0%{?rhel} == 8
+%patch -P 0 -p1 -r
+%else
 sed -i -r 's/--no-deps/--no-deps --no-build-isolation/' src/vpp-api/python/CMakeLists.txt
+%endif
 
 %pre
 # Add the vpp group

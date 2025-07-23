@@ -109,6 +109,8 @@ This package contains a tailored VPP SELinux policy
 %prep
 %setup -q -n %{name}-%{version}
 
+sed -i -r '/setuptools>=61/d' src/vpp-api/python/pyproject.toml
+
 %pre
 # Add the vpp group
 groupadd -f -r vpp

@@ -109,7 +109,7 @@ This package contains a tailored VPP SELinux policy
 %prep
 %setup -q -n %{name}-%{version}
 
-sed -i -r '/setuptools>=61/d' src/vpp-api/python/pyproject.toml
+sed -i -r 's/--no-deps/--no-deps --no-build-isolation/' src/vpp-api/python/CMakeLists.txt
 
 %pre
 # Add the vpp group

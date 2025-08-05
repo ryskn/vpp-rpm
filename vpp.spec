@@ -23,8 +23,8 @@ Name: vpp
 Summary: Vector Packet Processing
 License: ASL 2.0
 Version: 25.10
-Release: 0.164.rc0.20250723gitf22e84b9b%{?dist}
-Source: %{name}-%{version}-rc0~164_gf22e84b9b.tar.xz
+Release: 0.206.rc0.20250805gitae77ea936%{?dist}
+Source: %{name}-%{version}-rc0~206_gae77ea936.tar.xz
 Patch0: https://github.com/FDio/vpp/commit/f22e84b9b9ff70a45f8d5e47f6d516324b81f8c8.patch
 BuildRequires: vpp-ext-deps
 BuildRequires: systemd chrpath
@@ -58,6 +58,7 @@ svm - vm library
 vlib - vector processing library
 vlib-api - binary API library
 vnet -  network stack library
+vpp_crypto_engines - cryptography libraries
 
 %package devel
 Summary: VPP header files, static libraries
@@ -237,6 +238,7 @@ fi
 %{_libdir}/lib*.so.*
 %{_libdir}/libvcl_ldpreload.so
 %{_libdir}/libvppmem_preload.so
+%{_libdir}/vpp_crypto_engines
 %dir %{_datadir}/vpp
 %dir %{_datadir}/vpp/api
 %{_datadir}/vpp/api/core
@@ -275,6 +277,5 @@ fi
 %defattr(-,bin,bin)
 %{_libdir}/vpp_plugins
 %{_libdir}/vpp_api_test_plugins
-%{_libdir}/vpp_crypto_engines
 %{_libdir}/vat2_plugins
 %{_datadir}/vpp/api/plugins

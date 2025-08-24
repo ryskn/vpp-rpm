@@ -28,7 +28,8 @@ Source: %{name}-%{version}-rc0~247_gd877375b3.tar.xz
 Patch0: https://github.com/FDio/vpp/commit/f22e84b9b9ff70a45f8d5e47f6d516324b81f8c8.patch
 BuildRequires: vpp-ext-deps
 BuildRequires: systemd chrpath
-BuildRequires: python3-devel python3-ply python3-pip python3-wheel
+BuildRequires: python3-devel python3-ply
+BuildRequires: python3-setuptools python3-pip python3-wheel
 BuildRequires: check-devel subunit-devel
 BuildRequires: selinux-policy-devel
 BuildRequires: libmnl-devel libnl3-devel

@@ -276,6 +276,7 @@ fi
 
 %files plugins
 %defattr(-,bin,bin)
+%{_libdir}/daq
 %{_libdir}/vpp_plugins
 %{_libdir}/vpp_api_test_plugins
 %{_libdir}/vat2_plugins

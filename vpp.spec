@@ -23,9 +23,10 @@ Name: vpp
 Summary: Vector Packet Processing
 License: ASL 2.0
 Version: 25.10
-Release: 0.278.rc0.20250905gite070068b7%{?dist}
-Source: %{name}-%{version}-rc0~278_ge070068b7.tar.xz
+Release: 0.288.rc0.20250912git3bb87b3d5%{?dist}
+Source: %{name}-%{version}-rc0~288_g3bb87b3d5.tar.xz
 Patch0: https://github.com/FDio/vpp/commit/f22e84b9b9ff70a45f8d5e47f6d516324b81f8c8.patch
+Patch1: vpp-ipsec-clang21.patch
 BuildRequires: vpp-ext-deps
 BuildRequires: systemd chrpath
 BuildRequires: python3-devel python3-ply
@@ -79,7 +80,7 @@ vppinfra
 %package plugins
 Summary: Vector Packet Processing--runtime plugins
 Group: System Environment/Libraries
-Requires: vpp = %{version}-%{release} numactl-libs
+Requires: vpp = %{version}-%{release}
 %description plugins
 This package contains VPP plugins
 
@@ -117,6 +118,7 @@ This package contains a tailored VPP SELinux policy
 %else
 sed -i -r 's/--no-deps/--no-deps --no-build-isolation/' src/vpp-api/python/CMakeLists.txt
 %endif
+%patch -P 1 -p1
 
 %pre
 # Add the vpp group

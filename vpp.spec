@@ -27,6 +27,7 @@ Release: 0.44.rc0.20251004gitb6f2b1cb1%{?dist}
 Source: %{name}-%{version}-rc0~44_gb6f2b1cb1.tar.xz
 Patch0: https://github.com/FDio/vpp/commit/f22e84b9b9ff70a45f8d5e47f6d516324b81f8c8.patch
 Patch1: vpp-ipsec-clang21.patch
+Patch2: vpp-vlib-vpp_version_h.patch
 BuildRequires: vpp-ext-deps
 BuildRequires: systemd chrpath
 BuildRequires: python3-devel python3-ply
@@ -119,6 +120,7 @@ This package contains a tailored VPP SELinux policy
 sed -i -r 's/--no-deps/--no-deps --no-build-isolation/' src/vpp-api/python/CMakeLists.txt
 %endif
 %patch -P 1 -p1
+%patch -P 2 -p1
 
 %pre
 # Add the vpp group

@@ -228,6 +228,7 @@ fi
 %{_bindir}/vppctl
 %{_bindir}/vpp_*
 %{_bindir}/svm*
+%{_bindir}/selog_client_example
 %dir %{_sysconfdir}/vpp
 %config(noreplace) %{_sysconfdir}/sysctl.d/80-vpp.conf
 %config(noreplace) %{_sysconfdir}/vpp/startup.conf

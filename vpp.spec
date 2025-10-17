@@ -119,7 +119,6 @@ This package contains a tailored VPP SELinux policy
 sed -i -r 's/--no-deps/--no-deps --no-build-isolation/' src/vpp-api/python/CMakeLists.txt
 %endif
 %patch -P 1 -p1
-%patch -P 2 -p1
 
 %pre
 # Add the vpp group

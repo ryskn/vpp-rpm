@@ -23,10 +23,9 @@ Name: vpp
 Summary: Vector Packet Processing
 License: ASL 2.0
 Version: 26.02
-Release: 0.114.rc0.20251026gite7fe7cd30%{?dist}
-Source: %{name}-%{version}-rc0~114_ge7fe7cd30.tar.xz
+Release: 0.156.rc0.20251101git3f06cc6d3%{?dist}
+Source: %{name}-%{version}-rc0~156_g3f06cc6d3.tar.xz
 Patch0: https://github.com/FDio/vpp/commit/f22e84b9b9ff70a45f8d5e47f6d516324b81f8c8.patch
-Patch1: vpp-ipsec-clang21.patch
 BuildRequires: vpp-ext-deps
 BuildRequires: systemd chrpath
 BuildRequires: python3-devel python3-ply
@@ -37,7 +36,7 @@ BuildRequires: libmnl-devel libnl3-devel
 BuildRequires: apr-devel numactl-devel
 BuildRequires: openssl-devel libunwind-devel
 BuildRequires: elfutils-libelf-devel libpcap-devel
-BuildRequires: clang cmake ninja-build
+BuildRequires: clang(major) < 21 clang cmake ninja-build
 %if 0%{?fedora} >= 41
 BuildRequires: openssl-devel-engine
 %endif
@@ -118,7 +117,6 @@ This package contains a tailored VPP SELinux policy
 %else
 sed -i -r 's/--no-deps/--no-deps --no-build-isolation/' src/vpp-api/python/CMakeLists.txt
 %endif
-%patch -P 1 -p1
 
 %pre
 # Add the vpp group
@@ -127,6 +125,10 @@ groupadd -f -r vpp
 %build
 %if 0%{?rhel} >= 10
 export VPP_EXCLUDED_PLUGINS=tlsopenssl
+%endif
+
+%if %{defined clang20_resource_dir}
+export CC=/usr/bin/clang-20
 %endif
 
 make -C build-root V=1 PLATFORM=vpp TAG=vpp install-packages

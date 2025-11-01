@@ -243,7 +243,6 @@ fi
 %defattr(-,bin,bin)
 %{_libdir}/lib*.so.*
 %{_libdir}/libvcl_ldpreload.so
-%{_libdir}/libvppmem_preload.so
 %{_libdir}/vpp_crypto_engines
 %dir %{_datadir}/vpp
 %dir %{_datadir}/vpp/api
@@ -271,7 +270,6 @@ fi
 %{_libdir}/cmake/vpp
 %{_libdir}/lib*.so
 %exclude %{_libdir}/libvcl_ldpreload.so
-%exclude %{_libdir}/libvppmem_preload.so
 %{_datadir}/vpp/*.py
 %defattr(644,root,root,755)
 %dir %{_datadir}/doc/vpp

@@ -282,5 +282,6 @@ fi
 %{_libdir}/daq
 %{_libdir}/vpp_plugins
 %{_libdir}/vpp_api_test_plugins
+%{_libdir}/vpp_drivers
 %{_libdir}/vat2_plugins
 %{_datadir}/vpp/api/plugins

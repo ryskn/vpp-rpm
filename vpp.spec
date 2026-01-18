@@ -131,6 +131,10 @@ export VPP_EXCLUDED_PLUGINS=tlsopenssl
 export CC=/usr/bin/clang-20
 %endif
 
+%if %{defined clang19_resource_dir}
+export CC=/usr/bin/clang-19
+%endif
+
 make -C build-root V=1 PLATFORM=vpp TAG=vpp install-packages
 cd extras/selinux && make -f %{_datadir}/selinux/devel/Makefile
 

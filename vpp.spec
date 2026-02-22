@@ -127,6 +127,9 @@ groupadd -f -r vpp
 export VPP_EXCLUDED_PLUGINS=tlsopenssl
 %endif
 
+export CC=/usr/bin/clang
+export CXX=/usr/bin/clang++
+
 %if %{defined clang20_resource_dir}
 export CC=/usr/bin/clang-20
 export CXX=/usr/bin/clang++-20

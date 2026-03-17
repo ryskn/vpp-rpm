@@ -1,0 +1,99 @@
+name: Build VPP RPM
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      image: ${{ steps.detect.outputs.image }}
+      is_rhel: ${{ steps.detect.outputs.is_rhel }}
+      supported: ${{ steps.detect.outputs.supported }}
+    steps:
+      - name: Detect container image from branch name
+        id: detect
+        run: |
+          case "${GITHUB_REF_NAME}" in
+            f33)            IMAGE=fedora:33;                          IS_RHEL=false ;;
+            f34)            IMAGE=fedora:34;                          IS_RHEL=false ;;
+            f35)            IMAGE=fedora:35;                          IS_RHEL=false ;;
+            f36)            IMAGE=fedora:36;                          IS_RHEL=false ;;
+            f37)            IMAGE=fedora:37;                          IS_RHEL=false ;;
+            f38)            IMAGE=fedora:38;                          IS_RHEL=false ;;
+            f39)            IMAGE=fedora:39;                          IS_RHEL=false ;;
+            f40)            IMAGE=fedora:40;                          IS_RHEL=false ;;
+            f41)            IMAGE=fedora:41;                          IS_RHEL=false ;;
+            f42)            IMAGE=fedora:42;                          IS_RHEL=false ;;
+            f43)            IMAGE=fedora:43;                          IS_RHEL=false ;;
+            f44)            IMAGE=fedora:44;                          IS_RHEL=false ;;
+            master)         IMAGE=fedora:rawhide;                     IS_RHEL=false ;;
+            epel8)          IMAGE=almalinux:8;                        IS_RHEL=true  ;;
+            epel9)          IMAGE=almalinux:9;                        IS_RHEL=true  ;;
+            epel10|"alma+epel10"|"rhel+epel10")
+                            IMAGE=almalinux:10;                       IS_RHEL=true  ;;
+            centosstream9)  IMAGE=quay.io/centos/centos:stream9;      IS_RHEL=true  ;;
+            openeuler20.03) IMAGE=openeuler/openeuler:20.03;          IS_RHEL=false ;;
+            openeuler24.03) IMAGE=openeuler/openeuler:24.03;          IS_RHEL=false ;;
+            *)              IMAGE="";                                  IS_RHEL=false ;;
+          esac
+          echo "image=${IMAGE}"     >> "${GITHUB_OUTPUT}"
+          echo "is_rhel=${IS_RHEL}" >> "${GITHUB_OUTPUT}"
+          [ -n "${IMAGE}" ] && echo "supported=true" >> "${GITHUB_OUTPUT}" \
+                            || echo "supported=false" >> "${GITHUB_OUTPUT}"
+
+  build:
+    needs: detect
+    if: needs.detect.outputs.supported == 'true'
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ needs.detect.outputs.image }}
+
+    steps:
+      - name: Install git and base tools
+        run: dnf install -y --allowerasing git-core curl rpm-build rpmdevtools dnf-plugins-core which
+
+      - name: Setup EPEL and CRB (RHEL-based only)
+        if: needs.detect.outputs.is_rhel == 'true'
+        run: |
+          dnf install -y epel-release
+          if grep -q "release 8" /etc/redhat-release 2>/dev/null; then
+            dnf config-manager --set-enabled powertools
+          else
+            dnf config-manager --set-enabled crb
+          fi
+
+      - name: Enable VPP COPR repository
+        run: dnf copr enable -y nucleo/vpp-git || true
+
+      - name: Clone packaging repository
+        run: git clone --branch "${GITHUB_REF_NAME}" https://github.com/ryskn/vpp-rpm.git /build
+
+      - name: Setup rpmbuild tree and sources
+        run: |
+          rpmdev-setuptree
+          # Copy all patch files
+          find /build -maxdepth 1 -name "*.patch" -exec cp {} ~/rpmbuild/SOURCES/ \;
+          cp /build/vpp.spec ~/rpmbuild/SPECS/
+          # Parse sources file for tarball name and MD5
+          TARBALL_FILE=$(awk '{print $2}' /build/sources)
+          MD5=$(awk '{print $1}' /build/sources)
+          curl -fL --retry 3 -o ~/rpmbuild/SOURCES/"${TARBALL_FILE}" \
+            "https://copr-dist-git.fedorainfracloud.org/repo/pkgs/nucleo/vpp-git/vpp/${TARBALL_FILE}/md5/${MD5}/${TARBALL_FILE}"
+
+      - name: Install build dependencies
+        run: dnf builddep -y ~/rpmbuild/SPECS/vpp.spec
+
+      - name: Build RPM
+        run: rpmbuild -ba ~/rpmbuild/SPECS/vpp.spec
+
+      - name: Upload RPMs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpms-${{ github.ref_name }}
+          path: |
+            /root/rpmbuild/RPMS/
+            /root/rpmbuild/SRPMS/
+          if-no-files-found: ignore
